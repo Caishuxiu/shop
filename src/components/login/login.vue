@@ -47,6 +47,7 @@ export default {
         // 2. 不成功
         // 提示消息
         if (status === 200) {
+          localStorage.setItem('token', data.token)
           this.$router.push({name: 'home'})
           this.$message.success(msg)
         } else {
