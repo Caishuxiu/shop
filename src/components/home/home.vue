@@ -11,7 +11,7 @@
           <h2 class="middle">电商后台管理系统</h2>
         </el-col>
         <el-col :span="2">
-          <a href="#" class="loginOut">退出</a>
+          <a href="#" class="loginOut" @click.prevent="handleOut()">退出</a>
         </el-col>
       </el-row>
     </el-header>
@@ -109,6 +109,16 @@ export default {
       this.$router.push({name: 'login'})
     }
     // tonken 有 -> 渲染组件
+  },
+  methods: {
+    handleOut () {
+      // 1. 清除 token
+      localStorage.clear()
+      // 2. 提示
+      this.$message.success('退出成功')
+      // 3. 来到 login 组件
+      this.$router.push({name: 'login'})
+    }
   }
 }
 </script>
