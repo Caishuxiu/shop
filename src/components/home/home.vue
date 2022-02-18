@@ -99,7 +99,17 @@
 
 <script>
 export default {
-  name: 'home'
+  name: 'home',
+  // newVue 之前自动触发
+  beforeCreate () {
+    // 获取 token
+    const token = localStorage.getItem('token')
+    // if token 没有 -> 登录
+    if (!token) {
+      this.$router.push({name: 'login'})
+    }
+    // tonken 有 -> 渲染组件
+  }
 }
 </script>
 
