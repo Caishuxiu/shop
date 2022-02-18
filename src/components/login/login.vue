@@ -62,8 +62,8 @@ export default {
 <style scoped>
   .login-wrap {
     height: 100%;
-    background-color: cadetblue;
-
+    /*background-color: cadetblue;*/
+    background-color: #282f78;
     /* 弹性盒布局 */
     display: flex;
     justify-content: center;
@@ -79,6 +79,8 @@ export default {
 
   .login-wrap .login-btn {
     width: 100%;
+    background-color: #70C2BB;
+    border: none;
   }
 
 </style>
