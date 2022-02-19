@@ -36,7 +36,7 @@ export default {
     // 登录请求
     handleLogin () {
       this.$http.post('login', this.formData).then((res) => {
-        console.log(res)
+        // console.log(res)
         const {
           data,
           meta: {msg, status}
