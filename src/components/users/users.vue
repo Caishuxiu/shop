@@ -26,7 +26,7 @@
         <span>数据列表</span>
       </el-col>
       <el-col :span="12" class="add">
-        <el-button class="add-btn" @click.prevent="showAddUserDialog()">添加</el-button>
+        <el-button class="add-btn" @click.prevent="showAddDialog()">添加</el-button>
       </el-col>
     </el-row>
     <!-- 3. 表格 -->
@@ -63,6 +63,7 @@
         label="Status">
         <template slot-scope="scope">
           <el-switch
+            @change="changeMgState(scope.row)"
             v-model="scope.row.mg_state"
             active-color="#70C2BB"
             inactive-color="#dcdfe6">
@@ -72,8 +73,19 @@
       <el-table-column
         label="Operation">
         <template slot-scope="scope">
-          <el-button size="mini" plain class="edit-btn" icon="el-icon-edit" circle></el-button>
-          <el-button size="mini" plain type="danger" icon="el-icon-delete" circle></el-button>
+          <el-button
+            @click.prevent="showEditDialog(scope.row)"
+            size="mini"
+            plain
+            class="edit-btn"
+            icon="el-icon-edit"
+            circle></el-button>
+          <el-button
+            @click.prevent="showDeleteBox(scope.row.id)"
+            size="mini"
+            plain type="danger"
+            icon="el-icon-delete"
+            circle></el-button>
           <el-button size="mini" plain type="warning" icon="el-icon-setting" circle></el-button>
         </template>
       </el-table-column>
@@ -113,6 +125,25 @@
       </div>
     </el-dialog>
 
+    <!-- 编辑用户的对话框 -->
+    <el-dialog title="编辑用户" :visible.sync="dialogFormVisibleEdit" width="25%">
+      <el-form :model="form">
+        <el-form-item label="用户：" label-width="100px">
+          <el-input disabled v-model="form.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱：" label-width="100px">
+          <el-input v-model="form.email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话：" label-width="100px">
+          <el-input v-model="form.mobile" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleEdit = false" class="cancel-btn">取 消</el-button>
+        <el-button @click="editUser()" class="sure-btn">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </el-card>
 </template>
 
@@ -134,6 +165,7 @@ export default {
       // pagesize: 2,
       // 添加对话框的属性
       dialogFormVisibleAdd: false,
+      dialogFormVisibleEdit: false,
       // 添加用户的表单数据
       form: {
         username: '',
@@ -147,6 +179,59 @@ export default {
     this.getUserList()
   },
   methods: {
+    // 修改用户状态
+    async changeMgState (user) {
+      // 发送请求
+      const res = await this.$http.put('users/' + user.id, user.mg_state)
+      console.log(res)
+      console.log('修改状态')
+    },
+
+    // 编辑用户 - 发送请求
+    async editUser () {
+      // const res = await this.$http.put('users/' + this.form.id, this.form)
+      // console.log(res)
+      this.$http.put('users/' + this.form.id, this.form)
+      this.dialogFormVisibleEdit = false
+      this.getUserList()
+    },
+
+    // 编辑用户 - 显示对话框
+    showEditDialog (user) {
+      this.dialogFormVisibleEdit = true
+      this.form = user
+    },
+
+    // 删除用户 - 打开消息盒子
+    showDeleteBox (userId) {
+      this.$confirm('删除用户？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        // 发送删除请求 :id -> 用户 id
+        // 1. data () 中找 userId
+        // 2. 把 userId 以参数形式传进来
+        const res = await this.$http.delete('users/' + userId)
+        console.log(res)
+        if (res.data.meta.status === 200) {
+          this.queryInfo.pagenum = 1
+          // 1. 更新视图
+          this.getUserList()
+          // 2. 提示
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+
     // 添加用户 - 发送请求
     async addUser () {
       // 关闭对话框
@@ -167,7 +252,8 @@ export default {
       }
     },
     // 添加用户 - 显示对话框
-    showAddUserDialog () {
+    showAddDialog () {
+      this.form = {}
       this.dialogFormVisibleAdd = true
     },
     // 搜索用户
@@ -181,6 +267,7 @@ export default {
       // 每页条数改，数据改
       console.log(`每页 ${val} 条`)
       this.queryInfo.pagesize = val
+      // this.queryInfo.pagenum = 1
       this.getUserList()
     },
     handleCurrentChange (val) {

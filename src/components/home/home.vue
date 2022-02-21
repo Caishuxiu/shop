@@ -169,5 +169,4 @@ export default {
 .el-menu-item:hover {
   background-color: #70C2BB !important;
 }
-
 </style>
