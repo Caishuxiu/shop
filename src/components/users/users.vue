@@ -83,10 +83,17 @@
           <el-button
             @click.prevent="showDeleteBox(scope.row.id)"
             size="mini"
-            plain type="danger"
+            plain
+            type="danger"
             icon="el-icon-delete"
             circle></el-button>
-          <el-button size="mini" plain type="warning" icon="el-icon-setting" circle></el-button>
+          <el-button
+            @click.prevent="showSetUserRoleDialog(scope.row)"
+            size="mini"
+            plain
+            type="warning"
+            icon="el-icon-setting"
+            circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -144,6 +151,28 @@
       </div>
     </el-dialog>
 
+    <!-- 分配角色的对话框 -->
+    <el-dialog title="分配角色" :visible.sync="dialogFormVisibleSet" width="30%">
+      <el-form :model="form">
+        <el-form-item>
+          <!-- 如果 select 绑定的数据和 option 的数据一样，则显示 option 的 label 数据 -->
+          <el-select v-model="currentRole" class="setStyle">
+            <el-option label="请选择" :value="-1"></el-option>
+             <el-option
+               :label="item.roleName"
+               :value="item.id"
+                v-for="(item, i) in roles"
+               :key="i"
+             ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleSet = false">取 消</el-button>
+        <el-button type="primary" @click="setRole()">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </el-card>
 </template>
 
@@ -166,25 +195,56 @@ export default {
       // 添加对话框的属性
       dialogFormVisibleAdd: false,
       dialogFormVisibleEdit: false,
+      dialogFormVisibleSet: false,
       // 添加用户的表单数据
       form: {
         username: '',
         password: '',
         email: '',
         mobile: ''
-      }
+      },
+      currentRole: -1,
+      currentUserId: -1,
+      // 保存所有的角色数据
+      roles: []
     }
   },
   created () {
     this.getUserList()
   },
   methods: {
+    // 分配角色 - 发送请求
+    async setRole () {
+      const res = await this.$http.put(`users/${this.currentUserId}/role`, {
+        rid: this.currentRole
+      })
+      this.dialogFormVisibleSet = false
+    },
+
+    // 分配角色 - 打开对话框
+    async showSetUserRoleDialog (user) {
+      this.dialogFormVisibleSet = true
+      // console.log('修改状态')
+      this.currentUserId = user.id
+
+      // 获取所有用户的角色 id
+      const res1 = await this.$http.get(`roles`)
+      // console.log(res1)
+      this.roles = res1.data.data
+
+      // 获取当前用户的角色 id
+      const res = await this.$http.get(`users/${user.id}`)
+      console.log(res)
+      this.currentRole = res.data.data.rid
+    },
+
     // 修改用户状态
     async changeMgState (user) {
       // 发送请求
-      const res = await this.$http.put('users/' + user.id, user.mg_state)
-      console.log(res)
-      console.log('修改状态')
+      const res = await this.$http.put(`users/${user.id}/state/${user.mg_state}`)
+      // this.mg_state = !this.mg_state
+      // console.log(res)
+      // console.log('修改状态')
     },
 
     // 编辑用户 - 发送请求
@@ -367,6 +427,9 @@ export default {
 .paginationFormat {
   margin-top: 20px;
   float: right;
+}
+.setStyle {
+  width: 80%;
 }
 
 </style>
