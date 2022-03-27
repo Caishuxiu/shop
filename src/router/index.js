@@ -28,13 +28,13 @@ export default new Router({
           component: Users
         },
         {
-          name: 'right',
-          path: 'right',
+          name: 'rights',
+          path: 'rights',
           component: Right
         },
         {
-          name: 'role',
-          path: 'role',
+          name: 'roles',
+          path: 'roles',
           component: Role
         }
       ]
