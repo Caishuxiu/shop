@@ -294,7 +294,7 @@ export default {
 
     // 添加用户 - 发送请求
     async addUser () {
-      // 关闭对话框
+      // 添加用户 - 关闭对话框
       this.dialogFormVisibleAdd = false
 
       const res = await this.$http.post('users', this.form)
@@ -349,7 +349,7 @@ export default {
       const res = await this.$http.get('users', {
         params: this.queryInfo
       })
-      console.log(res)
+      // console.log(res)
       const {meta: {status, msg}, data: {users, total}} = res.data
       if (status === 200) {
         // 1. 给表格传数据

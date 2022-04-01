@@ -7,6 +7,10 @@ import Home from '@/components/home/home'
 import Users from '@/components/users/users'
 import Right from '@/components/rights/right'
 import Role from '@/components/rights/role'
+import Goodslist from '@/components/goods/goodslist'
+import Goodsadd from '@/components/goods/goodsadd'
+import Cateparams from '@/components/goods/cateparams'
+import Goodscate from '@/components/goods/goodscate'
 
 Vue.use(Router)
 
@@ -36,6 +40,26 @@ export default new Router({
           name: 'roles',
           path: 'roles',
           component: Role
+        },
+        {
+          name: 'goods',
+          path: 'goods',
+          component: Goodslist
+        },
+        {
+          name: 'goodsadd',
+          path: 'add',
+          component: Goodsadd
+        },
+        {
+          name: 'cateparams',
+          path: 'params',
+          component: Cateparams
+        },
+        {
+          name: 'goodscate',
+          path: 'categories',
+          component: Goodscate
         }
       ]
     }

@@ -12,6 +12,7 @@ import '@/assets/css/global.css'
 
 import App from './App'
 import myBread from '@/components/custom/myBread.vue'
+
 import router from './router'
 
 Vue.use(ElementUI)
