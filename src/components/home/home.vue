@@ -111,6 +111,7 @@ export default {
 }
 .middle {
   /*vertical-align: center;*/
+  /*text-align: center;*/
   padding-bottom: 0;
   padding-top: 10px;
   padding-left: 20px;

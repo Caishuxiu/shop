@@ -1,4 +1,4 @@
-# test
+# E-commerce background management system
 
 > A Vue.js project
 
@@ -28,3 +28,16 @@ npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## Screenshots
+
+![1](/home/caishuxiu/Documents/Project/vue/shop/screenshots/1.png)
+
+![2](/home/caishuxiu/Documents/Project/vue/shop/screenshots/2.png)
+
+![3](/home/caishuxiu/Documents/Project/vue/shop/screenshots/3.png)
+
+![4](/home/caishuxiu/Documents/Project/vue/shop/screenshots/4.png)
+
+![5](/home/caishuxiu/Documents/Project/vue/shop/screenshots/5.png)
+
