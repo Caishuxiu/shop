@@ -31,7 +31,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ## Screenshots
 
-![1](/home/caishuxiu/Documents/Project/vue/shop/screenshots/1.png)
+![1](https://github.com/Caishuxiu/shop/blob/main/screenshots/1.png)
 
 ![2](/home/caishuxiu/Documents/Project/vue/shop/screenshots/2.png)
 
